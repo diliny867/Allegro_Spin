@@ -3,6 +3,7 @@
 #include "Angle.hpp"
 #include "EllipseAngles.hpp"
 #include "Poly2d.hpp"
+#include "Poly3d.hpp"
 #include <cmath>
 #include <iostream>
 #include <vector>

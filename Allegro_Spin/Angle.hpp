@@ -8,12 +8,15 @@ private:
 	double value;
 	double cos;
 	double sin;
-public:
 	
+public:
 	double inc;
+	double x;
+	double y;
 	Angle();
 	Angle(double v0);
 	Angle(double v0, double i0);
+	Angle(double x0, double y0, double v0, double i0);
 	void Inc(double side);
 	double GetVal() const;
 	double GetCos() const;

@@ -1,7 +1,9 @@
 #include "EllipseAngles.hpp"
 EllipseAngles::EllipseAngles(double rx0, double ry0, double n):
 	rx(rx0),
-	ry(ry0)
+	ry(ry0),
+	side_x(rx0),
+	side_y(ry0)
 {
 	for(int i=0;i<n;i++)
 	{
@@ -10,7 +12,9 @@ EllipseAngles::EllipseAngles(double rx0, double ry0, double n):
 }
 EllipseAngles::EllipseAngles(double rx0, double ry0, double n, double i0):
 	rx(rx0),
-	ry(ry0)
+	ry(ry0),
+	side_x(rx0),
+	side_y(ry0)
 {
 	for (int i = 0; i < n; i++)
 	{

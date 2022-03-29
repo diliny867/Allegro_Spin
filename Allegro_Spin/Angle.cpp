@@ -1,6 +1,8 @@
 #include "Angle.hpp"
 
 Angle::Angle():
+	x(0),
+	y(0),
 	value(0),
 	cos(1),
 	sin(0),
@@ -8,6 +10,8 @@ Angle::Angle():
 	defaultVal(0)
 {}
 Angle::Angle(double v0) :
+	x(0),
+	y(0),
 	value(v0),
 	cos(std::cos(v0* pi / 180)),
 	sin(std::sin(v0* pi / 180)),
@@ -15,9 +19,20 @@ Angle::Angle(double v0) :
 	defaultVal(v0)
 {}
 Angle::Angle(double v0, double i0):
+	x(0),
+	y(0),
 	value(v0),
 	cos(std::cos(v0 * pi / 180)),
 	sin(std::sin(v0 * pi / 180)),
+	inc(i0),
+	defaultVal(v0)
+{}
+Angle::Angle(double x0, double y0, double v0, double i0) :
+	x(x0),
+	y(y0),
+	value(v0),
+	cos(std::cos(v0* pi / 180)),
+	sin(std::sin(v0* pi / 180)),
 	inc(i0),
 	defaultVal(v0)
 {}
