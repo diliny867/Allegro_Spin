@@ -33,6 +33,9 @@
     <ClCompile Include="EllipseAngles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Poly2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllegroBase.hpp">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EllipseAngles.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Poly2d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

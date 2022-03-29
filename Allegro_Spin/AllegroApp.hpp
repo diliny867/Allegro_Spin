@@ -2,6 +2,7 @@
 #include "PolygonFactory.hpp"
 #include "Angle.hpp"
 #include "EllipseAngles.hpp"
+#include "Poly2d.hpp"
 #include <cmath>
 #include <iostream>
 #include <vector>

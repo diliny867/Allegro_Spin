@@ -24,16 +24,21 @@ void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
     }
 }
 
-void DrawFigure(vector<vector<float>>Figure){
+void DrawFigure(vector<Poly2d>Figure){
 	for(int i=0; i <Figure.size(); i++)
 	{
-        al_draw_polygon(Figure[i].data(), 4, ALLEGRO_LINE_JOIN_BEVEL, al_map_rgb(255, 0, 0), 3, 1);
+        Figure[i].Draw();
+        //al_draw_polygon(Figure[i].Polygon.data(), 4, ALLEGRO_LINE_JOIN_BEVEL, Figure[i].color, 3, 1);
 	}
 }
 
 void AllegroApp::Run() {
-
-    vector<vector<float>>Polygons{{},{},{},{}};
+    vector<Poly2d>Polygons;
+    Polygons.reserve(4);
+    for(int i=0;i<4;i++)
+    {
+        Polygons.push_back(Poly2d());
+    }
 
 	double ax, ay, bx, by, cx, cy, dx, dy;
 
@@ -58,8 +63,8 @@ void AllegroApp::Run() {
     //al_register_event_source(alEventQueue_, al_get_timer_event_source(timer));
     //al_start_timer(timer);
 
-    cout << "Press Space to spin\nPress C to change spin direction\nHold Left/a to spin left\nHold Right/w to spin right\n";
-
+    cout << "Press Space to spin\nPress C to change spin direction\nHold Left/A to spin left\nHold Right/D to spin right\nSpin mouse wheel to scale cube\n";
+    
     al_start_timer(alTimer_);
     bool redraw = false;
     while (true){
@@ -148,10 +153,10 @@ void AllegroApp::Run() {
             //al_draw_pixel(ax + 100, -1 * ay + 160, al_map_rgb(255, 255, 255));
             //al_draw_pixel(bx + 100, -1 * by + 160, al_map_rgb(255, 255, 255));
 
-            Polygons[0] = (PolygonFactory::NewPolygon(ax + d_1, ay + d_1, bx + d_1, by + d_1, bx + d_1, -1 * by + d_2, ax + d_1, -1 * ay + d_2));//front
-            Polygons[1] = (PolygonFactory::NewPolygon(cx + d_1, cy + d_1, dx + d_1, dy + d_1, dx + d_1, -1 * dy + d_2, cx + d_1, -1 * cy + d_2));//back
-            Polygons[2] = (PolygonFactory::NewPolygon(ax + d_1, ay + d_1, bx + d_1, by + d_1, cx + d_1, cy + d_1, dx + d_1, dy + d_1));//top
-            Polygons[3] = (PolygonFactory::NewPolygon(ax + d_1, -1 * ay + d_2, bx + d_1, -1 * by + d_2, cx + d_1, -1 * cy + d_2, dx + d_1, -1 * dy + d_2));//bottom
+            Polygons[0] = (PolygonFactory::NewPolygon(ax + d_1, ay + d_1, bx + d_1, by + d_1, bx + d_1, -1 * by + d_2, ax + d_1, -1 * ay + d_2, 3, al_map_rgb(255, 0, 0)));//front
+            Polygons[1] = (PolygonFactory::NewPolygon(cx + d_1, cy + d_1, dx + d_1, dy + d_1, dx + d_1, -1 * dy + d_2, cx + d_1, -1 * cy + d_2, 3, al_map_rgb(255, 0, 0)));//back
+            Polygons[2] = (PolygonFactory::NewPolygon(ax + d_1, ay + d_1, bx + d_1, by + d_1, cx + d_1, cy + d_1, dx + d_1, dy + d_1, 3, al_map_rgb(255, 0, 0)));//top
+            Polygons[3] = (PolygonFactory::NewPolygon(ax + d_1, -1 * ay + d_2, bx + d_1, -1 * by + d_2, cx + d_1, -1 * cy + d_2, dx + d_1, -1 * dy + d_2, 3, al_map_rgb(255, 0, 0)));//bottom
 
             DrawFigure(Polygons);
             al_flip_display();

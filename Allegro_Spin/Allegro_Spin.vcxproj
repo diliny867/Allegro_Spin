@@ -146,6 +146,7 @@
     <ClCompile Include="AllegroBase.cpp" />
     <ClCompile Include="Angle.cpp" />
     <ClCompile Include="EllipseAngles.cpp" />
+    <ClCompile Include="Poly2d.cpp" />
     <ClCompile Include="PolygonFactory.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
@@ -154,6 +155,7 @@
     <ClInclude Include="AllegroBase.hpp" />
     <ClInclude Include="Angle.hpp" />
     <ClInclude Include="EllipseAngles.hpp" />
+    <ClInclude Include="Poly2d.hpp" />
     <ClInclude Include="PolygonFactory.hpp" />
   </ItemGroup>
   <ItemGroup>
