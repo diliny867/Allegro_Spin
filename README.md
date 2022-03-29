@@ -1,1 +1,2 @@
-Allegro_Spin
+# Allegro Spinning Cube
+Simple spinning cube
