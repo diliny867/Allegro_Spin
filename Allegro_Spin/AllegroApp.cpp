@@ -18,14 +18,12 @@ void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
 
 void AllegroApp::Run() {
 
-    Poly3d cube(200, 200, 80, 120, 10, 4, delta);
+    Poly3d cube(200, 200, 80, 120, 10, 10, 4, delta, delta);
     cube.Poly2ds.reserve(4);
     for (int i = 0; i < 4; i++)
     {
         cube.Poly2ds.push_back(Poly2d());
     }
-
-	double ax, ay, bx, by, cx, cy, dx, dy;
 
     double height = 80;//distance between ellipses
     double d_1 = 200;//distance from left side
@@ -37,6 +35,7 @@ void AllegroApp::Run() {
     int mouseZ=0;
     int mouseWheelCooldown = 30;//frames
     bool mWCooldown = false;
+    int mouseLastX = 0;
 
     ALLEGRO_EVENT ev;
     al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -47,7 +46,15 @@ void AllegroApp::Run() {
     //al_start_timer(timer);
 
     cout << "Press Space to spin\nPress C to change spin direction\nHold Left/A to spin left\nHold Right/D to spin right\nSpin mouse wheel to scale cube\n";
-    
+
+	//ALLEGRO_BITMAP* bmp = al_load_bitmap("pic1.png");
+    //al_draw_bitmap(bmp, 0, 0, NULL);
+    //al_flip_display();
+    //al_grab_mouse(alDisplay_);
+    //ALLEGRO_MOUSE_CURSOR* cursor = al_create_mouse_cursor(bmp, 0, 0);
+    //al_set_mouse_cursor(alDisplay_, cursor);
+
+
     al_start_timer(alTimer_);
     bool redraw = false;
     while (true){
@@ -65,6 +72,14 @@ void AllegroApp::Run() {
                 if (pressedKeys_[ALLEGRO_KEY_RIGHT] || pressedKeys_[ALLEGRO_KEY_D]) {
                     cube.ellipse.IncAll(1);
                 }
+                /*
+                if (pressedKeys_[ALLEGRO_KEY_UP] || pressedKeys_[ALLEGRO_KEY_W]) {
+                    cube.ellipse2.IncAll(1);
+                }
+                if (pressedKeys_[ALLEGRO_KEY_DOWN] || pressedKeys_[ALLEGRO_KEY_S]) {
+                    cube.ellipse2.IncAll(-1);
+                }
+                */
                 if(mWCooldown){
                     mouseWheelCooldown--;
                     if (mouseWheelCooldown <= 0){
@@ -89,7 +104,7 @@ void AllegroApp::Run() {
                 spin = !spin;
             }
             if (ev.keyboard.keycode == ALLEGRO_KEY_C) {
-                spinDirection = spinDirection == 1 ? -1 : 1;
+                spinDirection *= -1;
             }
         }
         else if (ev.type == ALLEGRO_EVENT_KEY_UP)
@@ -100,21 +115,18 @@ void AllegroApp::Run() {
     	if (ev.type == ALLEGRO_EVENT_MOUSE_AXES)
         {
             mouseZ = ev.mouse.z;
+
+            //mouseLastX = ev.mouse.x;
             //mWCooldown = true;//activate cooldown
+            
         }
         if (redraw && al_is_event_queue_empty(alEventQueue_)){
             redraw = false;
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            //al_draw_pixel(side_x * cos(a * pi / 180) + 100, side_y * sin(a * pi / 180) + 100, al_map_rgb(255, 255, 255));
-            //al_draw_pixel(side_x * cos(b * pi / 180) + 100, side_y * sin(b * pi / 180) + 100, al_map_rgb(255, 255, 255));
-            //al_draw_pixel(side_x * cos(c * pi / 180) + 100, side_y * sin(c * pi / 180) + 100, al_map_rgb(255, 255, 255));
-            //al_draw_pixel(side_x * cos(d * pi / 180) + 100, side_y * sin(d * pi / 180) + 100, al_map_rgb(255, 255, 255));
-            //al_draw_rectangle(side_x * cos(a * pi / 180) + 100, side_y * sin(a * pi / 180) + 100, side_x * cos(a * pi / 180) + 100, -1*side_y * sin(a * pi / 180) + 160, al_map_rgb(255, 255, 255),3);
-
-
             cube.Scale(mouseZ);
+            //cube.Scale(cos(cube.ellipse.angles[0].GetVal()*pi/180)*50);
             cube.Move();
             cube.Draw();
             al_flip_display();

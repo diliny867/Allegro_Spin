@@ -57,6 +57,11 @@ bool AllegroBase::Init( int screenWidth, int screenHeight, int fps )
         return false;
     }
     */
+    if (!al_init_image_addon())
+    {
+        cout << "failed to init image addon!" << endl;
+        return false;
+    }
     if (!al_init_font_addon())
     {
         cout << "failed to init font addon!" << endl;

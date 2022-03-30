@@ -14,6 +14,7 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_image.h>
 
 const int FPS = 60;
 const int SCREEN_W = 640;
