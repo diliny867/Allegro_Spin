@@ -3,23 +3,23 @@
 class Angle
 {
 private:
-	const double pi = 3.14159265;
-	double defaultVal;
-	double value;
-	double cos;
-	double sin;
+	const float pi = 3.14159265;
+	float defaultVal;
+	float value;
+	float cos;
+	float sin;
 	
 public:
-	double inc;
-	double x;
-	double y;
+	float inc;
+	float x;
+	float y;
 	Angle();
-	Angle(double v0);
-	Angle(double v0, double i0);
-	Angle(double x0, double y0, double v0, double i0);
-	void Inc(double side);
-	double GetVal() const;
-	double GetCos() const;
-	double GetSin() const;
-	void SetValue(double n);
+	Angle(float v0);
+	Angle(float v0, float i0);
+	Angle(float x0, float y0, float v0, float i0);
+	void Inc(float side);
+	float GetVal() const;
+	float GetCos() const;
+	float GetSin() const;
+	void SetValue(float n);
 };

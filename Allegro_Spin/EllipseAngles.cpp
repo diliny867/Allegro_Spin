@@ -1,5 +1,5 @@
 #include "EllipseAngles.hpp"
-EllipseAngles::EllipseAngles(double rx0, double ry0, double n):
+EllipseAngles::EllipseAngles(float rx0, float ry0, float n):
 	rx(rx0),
 	ry(ry0),
 	side_x(rx0),
@@ -10,7 +10,7 @@ EllipseAngles::EllipseAngles(double rx0, double ry0, double n):
 		angles.push_back(*new Angle((360/n)*(i+1)));
 	}
 }
-EllipseAngles::EllipseAngles(double rx0, double ry0, double n, double i0):
+EllipseAngles::EllipseAngles(float rx0, float ry0, float n, float i0):
 	rx(rx0),
 	ry(ry0),
 	side_x(rx0),
@@ -21,26 +21,26 @@ EllipseAngles::EllipseAngles(double rx0, double ry0, double n, double i0):
 		angles.push_back(*new Angle((360 / n) * (i + 1),i0));
 	}
 }
-void EllipseAngles::IncAll(double side)
+void EllipseAngles::IncAll(float side)
 {
 	for(int i=0;i<angles.size();i++)
 	{
 		angles[i].Inc(side);
 	}
 }
-double EllipseAngles::GetRx() const
+float EllipseAngles::GetRx() const
 {
 	return rx;
 }
-double EllipseAngles::GetRy() const
+float EllipseAngles::GetRy() const
 {
 	return ry;
 }
-void EllipseAngles::SetRx(double n)
+void EllipseAngles::SetRx(float n)
 {
 	rx = n;
 }
-void EllipseAngles::SetRy(double n)
+void EllipseAngles::SetRy(float n)
 {
 	ry = n;
 }

@@ -4,17 +4,17 @@
 class EllipseAngles
 {
 private:
-	double rx;
-	double ry;
+	float rx;
+	float ry;
 public:
 	std::vector<Angle>angles;
-	double side_x;
-	double side_y;
-	EllipseAngles(double rx0, double ry0, double n);
-	EllipseAngles(double rx0, double ry0, double n, double i0);
-	void IncAll(double side);
-	double GetRx() const;
-	double GetRy() const;
-	void SetRx(double n);
-	void SetRy(double n);
+	float side_x;
+	float side_y;
+	EllipseAngles(float rx0, float ry0, float n);
+	EllipseAngles(float rx0, float ry0, float n, float i0);
+	void IncAll(float side);
+	float GetRx() const;
+	float GetRy() const;
+	void SetRx(float n);
+	void SetRy(float n);
 };

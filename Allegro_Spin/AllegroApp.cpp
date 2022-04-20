@@ -2,9 +2,9 @@
 using namespace std;
 AllegroApp::AllegroApp(){}
 
-const double pi = 3.14159265;
+const float pi = 3.14159265;
 
-double delta = 1;
+float delta = 1;
 
 
 void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
@@ -25,9 +25,9 @@ void AllegroApp::Run() {
         cube.Poly2ds.push_back(Poly2d());
     }
 
-    double height = 80;//distance between ellipses
-    double d_1 = 200;//distance from left side
-    double d_2 = 200+height;//distance from top side
+    float height = 80;//distance between ellipses
+    float d_1 = 200;//distance from left side
+    float d_2 = 200+height;//distance from top side
 
     bool spin = false;
     int spinDirection=1;
@@ -126,7 +126,7 @@ void AllegroApp::Run() {
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
             cube.Scale(mouseZ);
-            //cube.Scale(cos(cube.ellipse.angles[0].GetVal()*pi/180)*50);
+            //cube.Scale(cube.ellipse.angles[0].GetCos()*50);
             cube.Move();
             cube.Draw();
             al_flip_display();
