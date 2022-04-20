@@ -7,6 +7,7 @@ class Poly3d
 private:
 	float defaultHeight;
 	const float pi = 3.14159265;
+	void FillPolys();
 public:
 	float x;
 	float y;

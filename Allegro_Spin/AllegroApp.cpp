@@ -17,12 +17,12 @@ void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
 
 
 void AllegroApp::Run() {
-
-    Poly3d cube(200, 200, 80, 120, 10, 10, 4, delta, delta);
-    cube.Poly2ds.reserve(4);
-    for (int i = 0; i < 4; i++)
+    const int n0 = 6;
+    Poly3d figure3d(200, 200, 80, 120, 10, 10, n0, delta, delta);
+    figure3d.Poly2ds.reserve(n0);
+    for (int i = 0; i < n0; i++)
     {
-        cube.Poly2ds.push_back(Poly2d());
+        figure3d.Poly2ds.push_back(Poly2d());
     }
 
     float height = 80;//distance between ellipses
@@ -64,13 +64,13 @@ void AllegroApp::Run() {
             if (ev.timer.source == alTimer_) {
                 //printf("a: %f b: %f c: %f d: %f \n", a, b, c, d);
                 if(spin){
-                    cube.ellipse.IncAll(spinDirection);
+                    figure3d.ellipse.IncAll(spinDirection);
                 }
                 if (pressedKeys_[ALLEGRO_KEY_LEFT] || pressedKeys_[ALLEGRO_KEY_A]) {
-                    cube.ellipse.IncAll(-1);
+                    figure3d.ellipse.IncAll(-1);
                 }
                 if (pressedKeys_[ALLEGRO_KEY_RIGHT] || pressedKeys_[ALLEGRO_KEY_D]) {
-                    cube.ellipse.IncAll(1);
+                    figure3d.ellipse.IncAll(1);
                 }
                 /*
                 if (pressedKeys_[ALLEGRO_KEY_UP] || pressedKeys_[ALLEGRO_KEY_W]) {
@@ -125,10 +125,10 @@ void AllegroApp::Run() {
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            cube.Scale(mouseZ);
+            figure3d.Scale(mouseZ);
             //cube.Scale(cube.ellipse.angles[0].GetCos()*50);
-            cube.Move();
-            cube.Draw();
+            figure3d.Move();
+            figure3d.Draw();
             al_flip_display();
         }
 
