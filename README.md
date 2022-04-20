@@ -1,2 +1,2 @@
 # Allegro Spinning Cube
-Simple spinning cube
+Simple spinning figure
