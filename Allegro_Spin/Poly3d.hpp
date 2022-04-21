@@ -5,18 +5,19 @@
 class Poly3d
 {
 private:
-	float defaultHeight;
+	const float defaultHeight;
+	const float defaultWidth;
 	const float pi = 3.14159265;
 	void FillPolys();
 	void FillPolys2();
 	void DrawTestE2() const;
-	bool drctn;
 public:
 	float x;
 	float y;
 	float height;
 	float width;
 	const int pointCount;
+	bool drctn;
 	EllipseAngles ellipse;
 	EllipseAngles ellipse2;
 	std::vector<Poly2d>Poly2ds;

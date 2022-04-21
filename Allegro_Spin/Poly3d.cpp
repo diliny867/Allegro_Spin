@@ -4,6 +4,8 @@
 
 Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0,  float n):
 	defaultHeight(h0),
+	defaultWidth(w0),
+	drctn(false),
 	x(x0),
 	y(y0),
 	height(h0),
@@ -16,6 +18,7 @@ Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0,
 
 Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0, float n, float e1i0, float e2i0, bool d0) :
 	defaultHeight(h0),
+	defaultWidth(w0),
 	drctn(d0),
 	x(x0),
 	y(y0),
@@ -29,8 +32,11 @@ Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0,
 void Poly3d::Scale(float n)
 {
 	height = defaultHeight * (1 + (n / 100));
+	width = defaultWidth * (1 + (n / 100));
 	ellipse.side_x = ellipse.GetRx() * (1 + (n / 100));
 	ellipse.side_y = ellipse.GetRy() * (1 + (n / 100));
+	ellipse2.side_x = ellipse2.GetRx() * (1 + (n / 100));
+	ellipse2.side_y = ellipse2.GetRy() * (1 + (n / 100));
 }
 /*
 void Poly3d::SetX(float n){
@@ -79,7 +85,7 @@ void Poly3d::Move()
 	Poly2ds[3] = (PolygonFactory::NewPolygon4Points(ax + x, -1 * ay + y + height, bx + x, -1 * by + y + height, cx + x, -1 * cy + y + height, dx + x, -1 * dy + y + height, 3, al_map_rgb(255, 0, 0)));//bottom
 	*/
 
-	/* attempt to add spinning on y axis
+	/* old attempt to add spinning on y axis
 	for (int i = 0; i < ellipse.angles.size(); i++) {
 		ellipse2.angles[i].x = ellipse2.side_x * ellipse2.angles[i].GetCos() * (1 - ellipse2.angles[i].GetCos() / 10);
 		ellipse2.angles[i].y = ellipse2.side_y * ellipse2.angles[i].GetSin() * (1 - ellipse2.angles[i].GetCos() / 10);
@@ -133,7 +139,7 @@ void Poly3d::DrawTestE2() const
 	for (int i = 0; i < ellipse2.angles.size(); i++) {
 		if (i == 0)
 		{
-			al_draw_pixel(-ellipse2.angles[i].x + dx+width, ellipse2.angles[i].y + 100, al_map_rgb(0, 0, 255));
+			al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(0, 0, 255));
 		}
 		else if(i==1)
 		{
@@ -147,6 +153,21 @@ void Poly3d::DrawTestE2() const
 			al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(255, 255, 255));
 		}
 	}
+	/*this will crash if point count is too low
+	al_draw_pixel(ellipse2.angles[0].x + dx, ellipse2.angles[0].y + 100, al_map_rgb(0, 0, 255));
+	al_draw_pixel(ellipse2.angles[1].x + dx, ellipse2.angles[1].y + 100, al_map_rgb(0, 255, 0));
+	al_draw_pixel(ellipse2.angles[2].x + dx, ellipse2.angles[2].y + 100, al_map_rgb(255, 0, 0));
+	for (int i = 3; i < ellipse2.angles.size(); i++) {
+
+		al_draw_pixel(ellipse2.angles[i].x + dx, ellipse2.angles[i].y + 100, al_map_rgb(255, 255, 255));
+	}
+	al_draw_pixel(-ellipse2.angles[0].x + dx + width, ellipse2.angles[0].y + 100, al_map_rgb(0, 0, 255));
+	al_draw_pixel(-ellipse2.angles[1].x + dx + width, ellipse2.angles[1].y + 100, al_map_rgb(0, 255, 0));
+	al_draw_pixel(-ellipse2.angles[2].x + dx + width, ellipse2.angles[2].y + 100, al_map_rgb(255, 0, 0));
+	for (int i = 3; i < ellipse2.angles.size(); i++) {
+		al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(255, 255, 255));
+	}
+	*/
 }
 void Poly3d::FillPolys2()
 {

@@ -5,5 +5,5 @@ Poly2d PolygonFactory::NewPolygon4Points(float x1, float y1, float x2, float y2,
 }
 Poly2d PolygonFactory::NewPolygon(std::vector<float> poly0, float t0, ALLEGRO_COLOR col)
 {
-    return *new Poly2d(poly0, t0, col);
+    return *new Poly2d(std::move(poly0), t0, col);
 }

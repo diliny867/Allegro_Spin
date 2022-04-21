@@ -3,12 +3,11 @@
 class Angle
 {
 private:
-	const float pi = 3.14159265;
+	const float pi = 3.14159265f;
 	float defaultVal;
 	float value;
 	float cos;
 	float sin;
-	
 public:
 	float inc;
 	float x;
