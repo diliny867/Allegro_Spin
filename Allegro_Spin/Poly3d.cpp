@@ -102,7 +102,7 @@ void Poly3d::Move()
 }
 void Poly3d::FillPolys()
 {
-	const int pointCount = Poly2ds.size();
+	const int pointCount = ellipse.angles.size();
 	std::vector<float>polygon(pointCount *2);
 	for (int i = 0; i < pointCount;i++) {
 		polygon[i*2]=ellipse.angles[i].x+x;
