@@ -1,8 +1,11 @@
 #include "AllegroApp.hpp"
 using namespace std;
-AllegroApp::AllegroApp() = default;
+AllegroApp::AllegroApp(){}
+
+const float pi = 3.14159265;
 
 float delta = 1;
+
 
 void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
     if (keyboard.keycode == ALLEGRO_KEY_LEFT || keyboard.keycode == ALLEGRO_KEY_A) {
@@ -12,44 +15,27 @@ void AllegroApp::OnKeyDown(const ALLEGRO_KEYBOARD_EVENT& keyboard) {
     }
 }
 
-void AddObject(vector<Poly3d>&poly3dvector)
-{
-    int size = 10;
-    float* args = new float[size]();
-    cout << "Please input spinning objects:\nx,y,height,width,e1 ry,e1 rx,pointCount,e1 increase,e2 increase,spin direction(vertical/sideways(1/0))\n";
-    for(int i=0;i<size;i++)
-    {
-        cin >> args[i];
-    }
-    //poly3dvector.emplace_back(x,y,height,width,e1ry,e2rx,pointCount,e1increase,e2increase,spinDirection);
-    poly3dvector.emplace_back(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-    poly3dvector[poly3dvector.size()-1].Poly2ds.reserve(args[6]);//args[6]==pointCount
-    poly3dvector[poly3dvector.size() - 1].Poly2ds.emplace_back(3);
-    cout << "Successfully created new object!\n";
-}
 
 void AllegroApp::Run() {
-    //cout << "Welcome!\nIn this app you can simulate spinning objects!\n";
-    //cout << "To add object press 1\n";
-    
-    vector<Poly3d>poly3ds;
-    poly3ds.emplace_back(200, 200, 80, 120, 10, 10, 5, delta, delta, false);
-    poly3ds.emplace_back(300, 200, 80, 120, 10, 10, 5, delta, delta, true);
-    int p3dsSize = poly3ds.size();
-    for (int j = 0; j < p3dsSize; j++) {
-        poly3ds[j].Poly2ds.reserve(poly3ds[j].pointCount);
-        for (int i = 0; i < poly3ds[j].pointCount; i++)
-        {
-            poly3ds[j].Poly2ds.emplace_back(3);//poly3ds[j].Poly2ds.push_back(Poly2d(3));
-        }
+    const int n0 = 6;
+    Poly3d figure3d(200, 200, 80, 120, 10, 10, n0, delta, delta);
+    figure3d.Poly2ds.reserve(n0);
+    for (int i = 0; i < n0; i++)
+    {
+        figure3d.Poly2ds.push_back(Poly2d());
     }
 
+    float height = 80;//distance between ellipses
+    float d_1 = 200;//distance from left side
+    float d_2 = 200+height;//distance from top side
+
     bool spin = false;
-    float spinDirection=1;
+    int spinDirection=1;
 
     int mouseZ=0;
     int mouseWheelCooldown = 30;//frames
     bool mWCooldown = false;
+    int mouseLastX = 0;
 
     ALLEGRO_EVENT ev;
     al_clear_to_color(al_map_rgb(0, 0, 0));
@@ -73,31 +59,18 @@ void AllegroApp::Run() {
     bool redraw = false;
     while (true){
         al_wait_for_event(alEventQueue_, &ev);
-        
         if (ev.type == ALLEGRO_EVENT_TIMER)
         {
             if (ev.timer.source == alTimer_) {
                 //printf("a: %f b: %f c: %f d: %f \n", a, b, c, d);
                 if(spin){
-                    for(int i=0;i<p3dsSize;i++)
-                    {
-	                    poly3ds[i].ellipse.IncAll(spinDirection);
-                        poly3ds[i].ellipse2.IncAll(spinDirection);
-                    }
+                    figure3d.ellipse.IncAll(spinDirection);
                 }
                 if (pressedKeys_[ALLEGRO_KEY_LEFT] || pressedKeys_[ALLEGRO_KEY_A]) {
-                    for (int i = 0; i < p3dsSize; i++)
-                    {
-                        poly3ds[i].ellipse.IncAll(-1);
-                        poly3ds[i].ellipse2.IncAll(-1);
-                    }
+                    figure3d.ellipse.IncAll(-1);
                 }
                 if (pressedKeys_[ALLEGRO_KEY_RIGHT] || pressedKeys_[ALLEGRO_KEY_D]) {
-                    for (int i = 0; i < p3dsSize; i++)
-                    {
-                        poly3ds[i].ellipse.IncAll(1);
-                        poly3ds[i].ellipse2.IncAll(1);
-                    }
+                    figure3d.ellipse.IncAll(1);
                 }
                 /*
                 if (pressedKeys_[ALLEGRO_KEY_UP] || pressedKeys_[ALLEGRO_KEY_W]) {
@@ -152,12 +125,10 @@ void AllegroApp::Run() {
 
             al_clear_to_color(al_map_rgb(0, 0, 0));
 
-            for (int i = 0; i < p3dsSize; i++)
-            {
-                poly3ds[i].Scale(mouseZ);
-                poly3ds[i].Move();
-                poly3ds[i].Draw();
-            }
+            figure3d.Scale(mouseZ);
+            //cube.Scale(cube.ellipse.angles[0].GetCos()*50);
+            figure3d.Move();
+            figure3d.Draw();
             al_flip_display();
         }
 
@@ -168,8 +139,8 @@ void AllegroApp::Run() {
     }
 }
 
-void AllegroApp::Draw()
-{
+void AllegroApp::Draw() {
+
 }
 
 void AllegroApp::Fps()

@@ -7,11 +7,9 @@ class Poly2d
 {
 public:
 	ALLEGRO_COLOR color;
-	float thickness;
+	int thickness;
 	std::vector<float>Polygon;
 	Poly2d();
-	Poly2d(float t0);
-	Poly2d(float t0, ALLEGRO_COLOR col);
-	Poly2d(std::vector<float> poly, float t0, ALLEGRO_COLOR col);
-	void Draw() const;
+	Poly2d(std::vector<float> poly,int t0,  ALLEGRO_COLOR col);
+	void Draw();
 };
