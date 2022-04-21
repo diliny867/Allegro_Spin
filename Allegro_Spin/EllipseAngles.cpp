@@ -7,7 +7,7 @@ EllipseAngles::EllipseAngles(float rx0, float ry0, float n):
 {
 	for(int i=0;i<n;i++)
 	{
-		angles.push_back(*new Angle((360/n)*(i+1)));
+		angles.push_back(*new Angle((360/n)*(i)));
 	}
 }
 EllipseAngles::EllipseAngles(float rx0, float ry0, float n, float i0):
@@ -18,7 +18,7 @@ EllipseAngles::EllipseAngles(float rx0, float ry0, float n, float i0):
 {
 	for (int i = 0; i < n; i++)
 	{
-		angles.push_back(*new Angle((360 / n) * (i + 1),i0));
+		angles.push_back(*new Angle((360 / n) * (i),i0));
 	}
 }
 void EllipseAngles::IncAll(float side)

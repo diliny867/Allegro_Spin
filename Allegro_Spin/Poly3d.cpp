@@ -8,18 +8,21 @@ Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0,
 	y(y0),
 	height(h0),
 	width(w0),
+	pointCount(n),
 	ellipse(w0 / 2, e1ry0, n),
-	ellipse2(e2rx0, h0 / n, n)
+	ellipse2(e2rx0, h0 / 2, n)
 {
 }
 
-Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0, float n, float e1i0, float e2i0) :
+Poly3d::Poly3d(float x0, float y0, float h0, float w0, float e1ry0, float e2rx0, float n, float e1i0, float e2i0, bool d0) :
 	defaultHeight(h0),
+	drctn(d0),
 	x(x0),
 	y(y0),
 	height(h0),
 	width(w0),
-	ellipse(w0/2, e1ry0, n, e1i0),
+	pointCount(n),
+	ellipse(w0 / 2, e1ry0, n, e1i0),
 	ellipse2(e2rx0, h0 / 2, n, e2i0)
 {
 }
@@ -50,17 +53,24 @@ float Poly3d::GetY() const{
 }
 
 */
+
 void Poly3d::Move()
 {
-
-	//calculate new point positions
-	//*(1 - ellipse.angles[i].GetSin() / 10) to add perspective
 	for (int i = 0; i < ellipse.angles.size();i++) {
 		ellipse.angles[i].x = ellipse.side_x * ellipse.angles[i].GetCos() * (1 - ellipse.angles[i].GetSin() / 10);
 		ellipse.angles[i].y = ellipse.side_y * ellipse.angles[i].GetSin() * (1 - ellipse.angles[i].GetSin() / 10);
 	}
 
-	FillPolys();
+	for (int i = 0; i < ellipse.angles.size(); i++) {
+		ellipse2.angles[i].x = ellipse2.side_x * ellipse2.angles[i].GetCos() * (1 - ellipse2.angles[i].GetCos() / 10);
+		ellipse2.angles[i].y = ellipse2.side_y * ellipse2.angles[i].GetSin() * (1 - ellipse2.angles[i].GetCos() / 10);
+	}
+
+	if (drctn) {
+		FillPolys2();
+	}else {
+		FillPolys();
+	}
 
 	/*
 	Poly2ds[0] = (PolygonFactory::NewPolygon4Points(ax + x, ay + y, bx + x, by + y, bx + x, -1 * by + y + height, ax + x, -1 * ay + y + height, 3, al_map_rgb(255, 0, 0)));//front
@@ -100,21 +110,85 @@ void Poly3d::Move()
 	Poly2ds[3] = (PolygonFactory::NewPolygon4Points(ax + x+bx2, -1 * ay + y + height + by2, bx + x+ax2, -1 * by + y + height + ay2, cx + x+bx2, -1 * cy + y + height + by2*-1, dx + x+ax2, -1 * dy + y + height + ay2*-1, 3, al_map_rgb(255, 0, 0)));//bottom
 	*/
 }
+void Poly3d::DrawTestE2() const
+{
+	float dx = 400;
+	for (int i = 0; i < ellipse2.angles.size(); i++) {
+		if (i == 0)
+		{
+			al_draw_pixel(ellipse2.angles[i].x + dx, ellipse2.angles[i].y + 100, al_map_rgb(0, 0, 255));
+		}
+		else if (i == 1)
+		{
+			al_draw_pixel(ellipse2.angles[i].x + dx, ellipse2.angles[i].y + 100, al_map_rgb(0, 255, 0));
+		}
+		else if (i == 2)
+		{
+			al_draw_pixel(ellipse2.angles[i].x + dx, ellipse2.angles[i].y + 100, al_map_rgb(255, 0, 0));
+		}
+		else {
+			al_draw_pixel(ellipse2.angles[i].x + dx, ellipse2.angles[i].y + 100, al_map_rgb(255, 255, 255));
+		}
+	}
+	for (int i = 0; i < ellipse2.angles.size(); i++) {
+		if (i == 0)
+		{
+			al_draw_pixel(-ellipse2.angles[i].x + dx+width, ellipse2.angles[i].y + 100, al_map_rgb(0, 0, 255));
+		}
+		else if(i==1)
+		{
+			al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(0, 255, 0));
+		}
+		else if (i == 2)
+		{
+			al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(255, 0, 0));
+		}
+		else {
+			al_draw_pixel(-ellipse2.angles[i].x + dx + width, ellipse2.angles[i].y + 100, al_map_rgb(255, 255, 255));
+		}
+	}
+}
+void Poly3d::FillPolys2()
+{
+	std::vector<float>polygon(pointCount * 2);
+	for (int i = 0; i < pointCount; i++) {
+		polygon[i * 2] = ellipse2.angles[i].x + x;
+		polygon[i * 2 + 1] = ellipse2.angles[i].y + y;
+	}
+	Poly2ds[0] = (NewPoly(polygon, Poly2ds[0].thickness, al_map_rgb(255, 0, 0)));//left
+	for (int i = 0; i < pointCount; i++) {
+		polygon[i * 2] = -ellipse2.angles[i].x + x+width;
+		polygon[i * 2 + 1] = ellipse2.angles[i].y + y;
+	}
+	Poly2ds[Poly2ds.size() - 1] = (NewPoly(polygon, Poly2ds[Poly2ds.size() - 1].thickness, al_map_rgb(255, 0, 0)));//right
+	
+	//middle
+	polygon.resize(8);
+	for (int j = 0; j < (pointCount + 1) / 2; j++) {
+		polygon[0] = ellipse2.angles[j * 2 < pointCount ? j * 2 : j * 2 - pointCount].x + x;
+		polygon[1] = ellipse2.angles[j * 2 < pointCount ? j * 2 : j * 2 - pointCount].y + y;
+		polygon[2] = ellipse2.angles[j * 2 + 1 < pointCount ? j * 2 + 1 : j * 2 + 1 - pointCount].x + x;
+		polygon[3] = ellipse2.angles[j * 2 + 1 < pointCount ? j * 2 + 1 : j * 2 + 1 - pointCount].y + y;
+		polygon[4] = -ellipse2.angles[j * 2 + 1 < pointCount ? j * 2 + 1 : j * 2 + 1 - pointCount].x + x+width;
+		polygon[5] = ellipse2.angles[j * 2 + 1 < pointCount ? j * 2 + 1 : j * 2 + 1 - pointCount].y + y;
+		polygon[6] = -ellipse2.angles[j * 2 < pointCount ? j * 2 : j * 2 - pointCount].x + x + width;
+		polygon[7] = ellipse2.angles[j * 2 < pointCount ? j * 2 : j * 2 - pointCount].y + y;
+		Poly2ds[j + 1] = (NewPoly(polygon, Poly2ds[j + 1].thickness, al_map_rgb(255, 0, 0)));//middle
+	}
+	
+}
 void Poly3d::FillPolys()
 {
-	const int pointCount = ellipse.angles.size();
 	std::vector<float>polygon(pointCount *2);
 	for (int i = 0; i < pointCount;i++) {
 		polygon[i*2]=ellipse.angles[i].x+x;
 		polygon[i*2+1]=ellipse.angles[i].y+y;
 	}
-	Poly2ds[0] = (NewPoly(polygon, 3, al_map_rgb(255, 0, 0)));//top
+	Poly2ds[0] = (NewPoly(polygon, Poly2ds[0].thickness, al_map_rgb(255, 0, 0)));//top
 	for (int i = 0; i < pointCount; i++) {
 		polygon[i * 2 + 1] = -ellipse.angles[i].y + y + height;
 	}
-	Poly2ds[Poly2ds.size() - 1] = (NewPoly(polygon, 3, al_map_rgb(255, 0, 0)));//bottom
-
-
+	Poly2ds[Poly2ds.size() - 1] = (NewPoly(polygon, Poly2ds[Poly2ds.size() - 1].thickness, al_map_rgb(255, 0, 0)));//bottom
 	//middle
 	polygon.resize(8);
 	for (int j = 0; j < (pointCount +1) / 2;j++) {
@@ -126,10 +200,10 @@ void Poly3d::FillPolys()
 		polygon[5] = -ellipse.angles[j* 2 + 1 < pointCount ? j*2+1	: j*2+1-pointCount].y + y + height;
 		polygon[6] = ellipse.angles[j * 2 <		pointCount ? j*2	: j*2-pointCount].x + x;
 		polygon[7] = -ellipse.angles[j * 2 <	pointCount ? j*2	: j*2-pointCount].y + y + height;
-		Poly2ds[j+1] = (NewPoly(polygon, 3, al_map_rgb(255, 0, 0)));//middle
+		Poly2ds[j+1] = (NewPoly(polygon, Poly2ds[j+1].thickness, al_map_rgb(255, 0, 0)));//middle
 	}
 
-
+	//al_draw_pixel(ellipse.angles[0].x + x, ellipse.angles[0].y + y-30, al_map_rgb(255, 255, 255));
 	/*
 	Poly2ds[0] = (NewPoly(std::vector<float>{ ax + x, ay + y, bx + x, by + y, bx + x, -by + y + height, ax + x, -ay + y + height }, 3, al_map_rgb(255, 0, 0)));//front
 	Poly2ds[1] = (NewPoly(std::vector<float>{ cx + x, cy + y, dx + x, dy + y, dx + x, -dy + y + height, cx + x, -cy + y + height }, 3, al_map_rgb(255, 0, 0)));//back
@@ -137,8 +211,10 @@ void Poly3d::FillPolys()
 	Poly2ds[3] = (NewPoly(std::vector<float>{ ax + x, -ay + y + height, bx + x, -by + y + height, cx + x, -cy + y + height, dx + x, -dy + y + height }, 3, al_map_rgb(255, 0, 0)));//bottom
 	*/
 }
-void Poly3d::Draw()
+void Poly3d::Draw() const
 {
+	//al_draw_line(x-width/2,y-ellipse.GetRy()-10,x+width/2,y-ellipse.GetRy()-10,al_map_rgb(255,255,255),3);
+	//al_draw_line(x-width/2-10,y,x-width/2-10,y+height, al_map_rgb(255, 255, 255), 3);
 	for (int i = 0; i < Poly2ds.size(); i++)
 	{
 		Poly2ds[i].Draw();
