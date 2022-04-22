@@ -28,6 +28,13 @@ void EllipseAngles::IncAll(float d)
 		angles[i].Inc(d);
 	}
 }
+void EllipseAngles::SetInc(float inc)
+{
+	for (int i = 0; i < angles.size(); i++)
+	{
+		angles[i].inc = inc;
+	}
+}
 float EllipseAngles::GetRx() const
 {
 	return rx;

@@ -179,7 +179,6 @@ void Poly3d::FillPolys2()
 	Poly2ds[0] = (NewPoly(polygon, Poly2ds[0].thickness, al_map_rgb(255, 0, 0)));//left
 	for (int i = 0; i < pointCount; i++) {
 		polygon[i * 2] = -ellipse2.angles[i].x + x+width;
-		polygon[i * 2 + 1] = ellipse2.angles[i].y + y;
 	}
 	Poly2ds[Poly2ds.size() - 1] = (NewPoly(polygon, Poly2ds[Poly2ds.size() - 1].thickness, al_map_rgb(255, 0, 0)));//right
 	

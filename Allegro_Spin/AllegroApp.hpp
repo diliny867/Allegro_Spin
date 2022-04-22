@@ -10,12 +10,15 @@
 
 #pragma once
 class AllegroApp :public AllegroBase{
+private:
+    bool inFunc;
 public:
 	std::vector<Poly3d>poly3ds;
     int p3dsSize;//need to change it every time, we add/remove figure. can remove it and use poly3ds.size() everywhere, but i dont want to
     AllegroApp();
     void AddFigure();
-    void RemoveFigure(int n);
+    void RemoveFigure();
+    void EditFigure();
     virtual void Run();
     virtual void Fps();
     virtual void Draw();

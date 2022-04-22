@@ -13,6 +13,7 @@ public:
 	EllipseAngles(float rx0, float ry0, float n);
 	EllipseAngles(float rx0, float ry0, float n, float i0);
 	void IncAll(float d);
+	void SetInc(float inc);
 	float GetRx() const;
 	float GetRy() const;
 	void SetRx(float n);
