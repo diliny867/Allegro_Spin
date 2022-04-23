@@ -231,6 +231,11 @@ void Poly3d::FillPolys()
 	Poly2ds[3] = (NewPoly(std::vector<float>{ ax + x, -ay + y + height, bx + x, -by + y + height, cx + x, -cy + y + height, dx + x, -dy + y + height }, 3, al_map_rgb(255, 0, 0)));//bottom
 	*/
 }
+Poly3d& Poly3d::operator=(Poly3d other) noexcept//TODO overload operator=
+{
+    x=other.x;
+    return *this;
+}
 void Poly3d::Draw() const
 {
 	//al_draw_line(x-width/2,y-ellipse.GetRy()-10,x+width/2,y-ellipse.GetRy()-10,al_map_rgb(255,255,255),3);
