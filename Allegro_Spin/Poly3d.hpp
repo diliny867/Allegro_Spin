@@ -32,6 +32,7 @@ public:
 	float GetX() const;
 	float GetY() const;
 	*/
+	Poly3d& operator=(Poly3d other) noexcept;//TODO: overload = operator
 	void Move();
 	void Draw() const;
 };
